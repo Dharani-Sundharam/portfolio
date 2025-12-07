@@ -7,7 +7,52 @@ import { Star, GitBranch, ArrowUpRight } from "lucide-react";
 // Extract username from social link or hardcode
 const GITHUB_USERNAME = "Dharani-Sundharam";
 
-// ... (MANUAL_PROJECTS and PROJECT_IMAGES remain unchanged) ...
+// Manual Project Data (Featured)
+const MANUAL_PROJECTS = [
+    {
+        id: 1,
+        name: "DriveSync",
+        description: "Vehicle-to-Vehicle (V2V) communication capability for decentralized navigation using Python, ROS, and YDLIDAR sensors. Features SLAM-based navigation with a custom control codebase.",
+        html_url: "https://github.com/Dharani-Sundharam/DriveSync",
+        language: "Python",
+        stargazers_count: 12,
+        image: "/images/projects/Drivesync1.png"
+    },
+    {
+        id: 2,
+        name: "4-bit Calculator",
+        description: "Hardware implementation of a 4-bit arithmetic calculator using discrete logic components and C++. Supporting addition, subtraction, and multiplication with 8-bit output.",
+        html_url: "https://github.com/Dharani-Sundharam/4-bit-calculator",
+        language: "C++",
+        stargazers_count: 8,
+        image: "/images/projects/4_bit_calc.jpeg"
+    },
+    {
+        id: 3,
+        name: "Smart Vending Machine",
+        description: "Sustainable healthcare solution providing 24/7 access to essential medicines using Raspberry Pi, RFID, and Flask. Features real-time stock monitoring and secure contactless dispensing.",
+        html_url: "", // No link
+        language: "Python",
+        stargazers_count: 15,
+        image: "/images/projects/vending_machine.jpeg"
+    },
+    {
+        id: 4,
+        name: "Fiber-Optics based Light collector",
+        description: "A Solar collector which concentrates Sunlight by a matrix of Solar luminescence concentrators that are made up of fiber optic material which collect and concentrate light assembly into fiber optic cables and which guide the light to a desired location where it can be used for lighting and reduce electricity consumption.",
+        html_url: "https://github.com/Dharani-Sundharam/Optic_light", // No link
+        language: "Python",
+        stargazers_count: 15,
+        image: "/images/projects/optic.jpg"
+    }
+];
+
+// Carousel images map
+const PROJECT_IMAGES = {
+    "DriveSync": "/images/projects/Drivesync1.png",
+    "4-bit Calculator": "/images/projects/4_bit_calc.jpeg",
+    "Smart Vending Machine": "/images/projects/vending_machine.jpeg"
+};
 
 // Repos to fetch from GitHub for "Other Repositories"
 const OTHER_REPOS_KEYS = [
