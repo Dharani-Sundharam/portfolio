@@ -41,7 +41,7 @@ const DUMMY_REPOS: Repo[] = [
 export async function fetchGitHubRepos(username: string): Promise<Repo[]> {
     try {
         const res = await fetch(
-            `https://api.github.com/users/${username}/repos?sort=updated&per_page=10`
+            `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`
         );
 
         if (!res.ok) {

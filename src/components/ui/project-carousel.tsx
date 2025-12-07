@@ -58,13 +58,13 @@ export function ProjectCarousel({ projects, images }: ProjectCarouselProps) {
                                     containerWidth="100%"
                                     imageHeight="100%"
                                     imageWidth="100%"
-                                    rotateAmplitude={12}
+                                    rotateAmplitude={24}
                                     scaleOnHover={1.05}
                                     showMobileWarning={false}
                                     showTooltip={!isRestricted}
                                     displayOverlayContent={true}
                                     overlayContent={
-                                        <div className="absolute bottom-0 left-0 w-full h-[45%] bg-gradient-to-t from-black via-black/80 to-transparent p-6 flex flex-col justify-end rounded-b-[15px]">
+                                        <div className="absolute bottom-0 left-0 w-full h-[35%] bg-gradient-to-t from-black via-black/80 to-transparent p-6 flex flex-col justify-end rounded-b-[15px]">
                                             <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                                                 <div className="mb-2">
                                                     <h3 className="text-3xl font-bold text-white mb-2 font-heading tracking-tight text-shadow-lg drop-shadow-lg">

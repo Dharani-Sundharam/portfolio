@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import PrismBackground from "@/components/ui/prism";
+import ClickSpark from "@/components/ui/click-spark";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,18 +32,26 @@ export default function RootLayout({
         <div className="fixed inset-0 z-0 pointer-events-none">
           <PrismBackground
             animationType="3drotate"
-            timeScale={1}
+            timeScale={0.7}
             height={3}
             baseWidth={5.5}
             scale={3}
-            hueShift={0.36}
-            colorFrequency={1.2}
+            hueShift={0.3}
+            colorFrequency={1.5}
             noise={0}
             glow={0.8}
           />
         </div>
-        <div className="relative z-10">
-          {children}
+        <div className="relative z-10 w-full h-full">
+          <ClickSpark
+            sparkColor='#00eaffff'
+            sparkSize={18}
+            sparkRadius={16}
+            sparkCount={8}
+            duration={300}
+          >
+            {children}
+          </ClickSpark>
         </div>
       </body>
     </html>
