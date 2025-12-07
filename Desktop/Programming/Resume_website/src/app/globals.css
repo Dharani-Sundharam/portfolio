@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-jakarta);
+
+  /* Monochrome Accent */
+  --color-space-black: #000000;
+  --color-space-accent: #ffffff;
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-black/60 backdrop-blur-xl border border-white/20;
+  }
+
+  .tech-border {
+    @apply border border-white/20;
+  }
+
+  .tech-glow {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .text-shadow {
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 0 0 60px rgba(255, 255, 255, 0.1);
+  }
+}
+
+body {
+  background-color: #000000;
+  color: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar for tech feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0b10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #06b6d4;
+}

@@ -1,0 +1,79 @@
+{
+    "profile": {
+        "name": "Dharani Sundharam",
+        "role": "Aspiring Engineer | Science is Elegant",
+        "tagline": "Merging IoT, Hardware, and Cybersecurity to build secure, innovative software solutions.",
+        "bio": "Electronics and Communication Engineering undergraduate with expertise in cybersecurity, IoT development, and assistive technology. Top-performing CTF competitor with hands-on skills in Arduino, Raspberry Pi, AWS, and full-stack development. Passionate about developing secure healthcare solutions, autonomous systems, and accessibility-focused applications, along with embedded systems and STM32 PCB designing.",
+        "avatar": "/profile_pic.png",
+        "social": {
+            "github": "https://github.com/Dharani-Sundharam",
+            "linkedin": "https://www.linkedin.com/in/dharani-sundharam/",
+            "email": "dharani3318s@gmail.com",
+            "phone": "+91 9626262428"
+        }
+    },
+    "experience": [
+        {
+            "id": 1,
+            "role": "Product Development Intern",
+            "company": "dVerse Technologies (iTNT Startup)",
+            "date": "Internship",
+            "description": [
+                "Developed security protocols for CuriO tactile tablet, ensuring robust data protection for visually impaired users.",
+                "Implemented secure IoT communication protocols for real-time audio feedback and hand tracking.",
+                "Enhanced accessibility features for STEM education applications.",
+                "Collaborated on human-computer interface design maintaining enterprise-level security."
+            ]
+        }
+    ],
+    "education": [
+        {
+            "id": 1,
+            "degree": "B.E. Electronics & Communication (ECE)",
+            "school": "RMD Engineering College",
+            "date": "2024 - 2028"
+        },
+        {
+            "id": 2,
+            "degree": "Secondary Education",
+            "school": "Hussain Memorial Matriculation Hr. Sec. School",
+            "date": "Completed"
+        }
+    ],
+    "skills": [
+        "Cybersecurity",
+        "Network Security",
+        "Penetration Testing",
+        "IoT & Embedded Systems",
+        "Arduino/Raspberry Pi",
+        "AWS Cloud",
+        "Python",
+        "C++",
+        "Java",
+        "React/Next.js",
+        "Computer Vision (OpenCV)",
+        "Docker",
+        "Linux",
+        "STM32",
+        "PCB Designing",
+        "Fusion 360",
+        "Backend Development"
+    ],
+    "posts": [
+        {
+            "title": "Smart Vending Machine for Medicine",
+            "summary": "Developed a sustainable healthcare solution providing 24/7 access to essential medicines in remote areas using Raspberry Pi, RFID, and Flask.",
+            "url": "https://www.linkedin.com/in/dharani-sundharam/"
+        },
+        {
+            "title": "Vehicle-to-Vehicle Communication",
+            "summary": "Engineered a real-time V2V communication platform using ESP-NOW with <5ms latency for collision avoidance.",
+            "url": "https://www.linkedin.com/in/dharani-sundharam/"
+        },
+        {
+            "title": "Top 10 CTF Player in India",
+            "summary": "Consistent high-level performance in national competitions and Top 100 Global Ranking on Hack The Box.",
+            "url": "https://www.linkedin.com/in/dharani-sundharam/"
+        }
+    ]
+}
