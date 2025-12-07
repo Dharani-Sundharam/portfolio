@@ -15,8 +15,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Dev Portfolio",
-  description: "Senior Frontend Engineer Portfolio",
+  title: "Dharani Sundharam - Portfolio",
+  description: "Electronics and Communication Engineer Portfolio",
 };
 
 export default function RootLayout({
