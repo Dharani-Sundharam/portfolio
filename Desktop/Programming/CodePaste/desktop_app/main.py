@@ -571,13 +571,15 @@ class MainWindow(QMainWindow):
         page2_layout.addWidget(qr_info)
         
         step_label = QLabel(
-            "Steps:\n"
-            "1. Scan QR and pay (Google Pay Recommended)\n"
-            "2. Send payment screenshot to @CodePastebot\n"
+            "Steps:<br>"
+            "1. Scan QR and pay (Google Pay Recommended)<br>"
+            "2. Send screenshot to <a href='https://t.me/CodePastebot' style='color: #8b5cf6; text-decoration: none; font-weight: bold;'>@CodePastebot</a><br>"
             "3. Get license key and enter below"
         )
         step_label.setFont(QFont("Segoe UI", 10))
         step_label.setStyleSheet("color: #8a8a9a;")
+        step_label.setOpenExternalLinks(True)
+        step_label.setTextFormat(Qt.TextFormat.RichText)
         page2_layout.addWidget(step_label)
         
         # Continue to license key entry
