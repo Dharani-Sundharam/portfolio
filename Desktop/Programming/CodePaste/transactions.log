@@ -1,0 +1,32 @@
+2026-01-07 20:49:38,758 - INFO - Connected to MongoDB
+2026-01-07 20:49:38,778 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.100:5000
+2026-01-07 20:49:38,778 - INFO - [33mPress CTRL+C to quit[0m
+2026-01-07 20:49:38,798 - INFO -  * Restarting with watchdog (windowsapi)
+2026-01-07 20:49:39,128 - INFO - Connected to MongoDB
+2026-01-07 20:49:39,138 - WARNING -  * Debugger is active!
+2026-01-07 20:49:39,142 - INFO -  * Debugger PIN: 869-857-672
+2026-01-07 21:03:10,323 - INFO -  * Detected change in 'c:\\Users\\Dharani Sundharam\\Desktop\\Programming\\CodePaste\\payment_webhook\\app.py', reloading
+2026-01-07 21:03:10,325 - INFO -  * Detected change in 'c:\\Users\\Dharani Sundharam\\Desktop\\Programming\\CodePaste\\payment_webhook\\app.py', reloading
+2026-01-07 21:03:11,792 - INFO -  * Restarting with watchdog (windowsapi)
+2026-01-07 21:03:12,465 - INFO - Connected to MongoDB
+2026-01-07 21:03:12,479 - WARNING -  * Debugger is active!
+2026-01-07 21:03:12,481 - INFO -  * Debugger PIN: 869-857-672
+2026-01-07 21:04:45,464 - INFO - Connected to MongoDB
+2026-01-07 21:04:45,477 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.100:5000
+2026-01-07 21:04:45,477 - INFO - [33mPress CTRL+C to quit[0m
+2026-01-07 21:04:45,491 - INFO -  * Restarting with watchdog (windowsapi)
+2026-01-07 21:04:45,806 - INFO - Connected to MongoDB
+2026-01-07 21:04:45,819 - WARNING -  * Debugger is active!
+2026-01-07 21:04:45,821 - INFO -  * Debugger PIN: 869-857-672
+2026-01-07 21:04:48,955 - INFO - 192.168.0.100 - - [07/Jan/2026 21:04:48] "GET / HTTP/1.1" 200 -
+2026-01-07 21:04:49,047 - INFO - 192.168.0.100 - - [07/Jan/2026 21:04:49] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-01-07 21:07:07,166 - INFO -  * Detected change in 'c:\\Users\\Dharani Sundharam\\Desktop\\Programming\\CodePaste\\payment_webhook\\app.py', reloading
+2026-01-07 21:07:07,167 - INFO -  * Detected change in 'c:\\Users\\Dharani Sundharam\\Desktop\\Programming\\CodePaste\\payment_webhook\\app.py', reloading
+2026-01-07 21:07:07,167 - INFO -  * Detected change in 'c:\\Users\\Dharani Sundharam\\Desktop\\Programming\\CodePaste\\payment_webhook\\app.py', reloading
+2026-01-07 21:07:08,187 - INFO -  * Restarting with watchdog (windowsapi)
