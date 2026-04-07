@@ -30,17 +30,17 @@ export function Hero() {
     };
 
     return (
-        <section id="hero" className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden pt-20">
+        <section id="hero" className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden pt-12 sm:pt-20">
             {/* Top Left Profile Icon */}
             <motion.div
-                className="absolute top-6 left-6 z-50 cursor-pointer"
+                className="absolute top-3 sm:top-6 left-3 sm:left-6 z-50 cursor-pointer"
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
                 onClick={() => setIsProfileExpanded(true)}
             >
                 {!isProfileExpanded && (
-                    <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:scale-110 transition-transform duration-300">
+                    <div className="relative w-10 sm:w-12 h-10 sm:h-12 rounded-full overflow-hidden border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:scale-110 active:scale-95 transition-transform duration-300">
                         <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
                     </div>
                 )}
@@ -76,20 +76,20 @@ export function Hero() {
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ delay: 0.1 }}
-                                className="flex flex-col items-center max-w-2xl w-full"
+                                className="flex flex-col items-center max-w-2xl w-full px-4"
                             >
-                                <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white/20 mb-8 shadow-[0_0_50px_rgba(255,255,255,0.1)]">
+                                <div className="w-32 sm:w-48 h-32 sm:h-48 rounded-full overflow-hidden border-4 border-white/20 mb-6 sm:mb-8 shadow-[0_0_50px_rgba(255,255,255,0.1)]">
                                     <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
                                 </div>
 
-                                <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center">{name}</h3>
-                                <p className="text-xl md:text-2xl text-cyan-400 font-mono text-center mb-8">{role}</p>
+                                <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4 text-center">{name}</h3>
+                                <p className="text-base sm:text-xl md:text-2xl text-cyan-400 font-mono text-center mb-6 sm:mb-8">{role}</p>
 
-                                <p className="text-gray-300 text-lg leading-relaxed mb-12 text-center max-w-xl">
+                                <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed mb-8 sm:mb-12 text-center max-w-xl">
                                     {bio}
                                 </p>
 
-                                <div className="flex justify-center gap-12">
+                                <div className="flex justify-center gap-6 sm:gap-12">
                                     <a href={social.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors flex flex-col items-center gap-2 group">
                                         <div className="p-4 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
                                             <Github size={32} />

@@ -36,8 +36,8 @@ export function Skills() {
     const duplicatedRow2 = [...secondRow, ...secondRow];
 
     return (
-        <section id="skills" className="py-24 relative z-0 overflow-hidden">
-            <div className="container mx-auto px-4 mb-16">
+        <section id="skills" className="py-12 sm:py-24 relative z-0 overflow-hidden">
+            <div className="container mx-auto px-3 sm:px-4 mb-8 sm:mb-16">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -45,24 +45,24 @@ export function Skills() {
                     transition={{ duration: 0.6 }}
                     className="text-center"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4 font-heading text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] text-shadow-lg">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 font-heading text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] text-shadow-lg">
                         Skills
                     </h2>
-                    <p className="text-gray-400 text-shadow-sm">
+                    <p className="text-gray-400 text-sm sm:text-base text-shadow-sm">
                         Technical proficiencies and tools.
                     </p>
                 </motion.div>
             </div>
 
-            <div className="flex flex-col gap-8 relative w-full">
+            <div className="flex flex-col gap-4 sm:gap-8 relative w-full">
                 {/* Gradient Masks for fade effect */}
-                <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none" />
+                <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none" />
+                <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none" />
 
                 {/* First Row - Moves Left */}
                 <div className="flex overflow-hidden">
                     <motion.div
-                        className="flex gap-8 whitespace-nowrap"
+                        className="flex gap-3 sm:gap-8 whitespace-nowrap"
                         animate={{
                             x: ["0%", "-50%"],
                         }}
@@ -70,7 +70,7 @@ export function Skills() {
                             x: {
                                 repeat: Infinity,
                                 repeatType: "loop",
-                                duration: 30,
+                                duration: 35,
                                 ease: "linear",
                             },
                         }}
@@ -80,10 +80,10 @@ export function Skills() {
                             return (
                                 <div
                                     key={`row1-${index}`}
-                                    className="flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white/90 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-colors cursor-default group shrink-0"
+                                    className="flex items-center gap-2 sm:gap-4 px-3 sm:px-8 py-2 sm:py-4 bg-white/5 border border-white/10 rounded-lg sm:rounded-2xl text-white/90 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-default group shrink-0 active:scale-95"
                                 >
-                                    <Icon className="w-8 h-8 text-lime-400/80 group-hover:text-lime-300 transition-colors drop-shadow-[0_0_5px_rgba(163,230,53,0.5)]" />
-                                    <span className="font-mono text-xl md:text-2xl tracking-tight font-medium">
+                                    <Icon className="w-4 h-4 sm:w-8 sm:h-8 text-lime-400/80 group-hover:text-lime-300 transition-colors drop-shadow-[0_0_5px_rgba(163,230,53,0.5)]" />
+                                    <span className="font-mono text-xs sm:text-lg md:text-2xl tracking-tight font-medium">
                                         {skill}
                                     </span>
                                 </div>
@@ -95,7 +95,7 @@ export function Skills() {
                 {/* Second Row - Moves Right */}
                 <div className="flex overflow-hidden">
                     <motion.div
-                        className="flex gap-8 whitespace-nowrap"
+                        className="flex gap-3 sm:gap-8 whitespace-nowrap"
                         animate={{
                             x: ["-50%", "0%"],
                         }}
@@ -103,7 +103,7 @@ export function Skills() {
                             x: {
                                 repeat: Infinity,
                                 repeatType: "loop",
-                                duration: 30,
+                                duration: 35,
                                 ease: "linear",
                             },
                         }}
@@ -113,10 +113,10 @@ export function Skills() {
                             return (
                                 <div
                                     key={`row2-${index}`}
-                                    className="flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white/90 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-colors cursor-default group shrink-0"
+                                    className="flex items-center gap-2 sm:gap-4 px-3 sm:px-8 py-2 sm:py-4 bg-white/5 border border-white/10 rounded-lg sm:rounded-2xl text-white/90 backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-all cursor-default group shrink-0 active:scale-95"
                                 >
-                                    <Icon className="w-8 h-8 text-lime-400/80 group-hover:text-lime-300 transition-colors drop-shadow-[0_0_5px_rgba(163,230,53,0.5)]" />
-                                    <span className="font-mono text-xl md:text-2xl tracking-tight font-medium">
+                                    <Icon className="w-4 h-4 sm:w-8 sm:h-8 text-lime-400/80 group-hover:text-lime-300 transition-colors drop-shadow-[0_0_5px_rgba(163,230,53,0.5)]" />
+                                    <span className="font-mono text-xs sm:text-lg md:text-2xl tracking-tight font-medium">
                                         {skill}
                                     </span>
                                 </div>

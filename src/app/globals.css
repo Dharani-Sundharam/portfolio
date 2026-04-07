@@ -33,6 +33,24 @@
   .text-shadow-lg {
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 0 0 60px rgba(255, 255, 255, 0.1);
   }
+
+  /* Mobile optimization: Reduce motion on smaller screens */
+  @media (max-width: 1023px) {
+    /* Reduce backdrop blur for better performance */
+    .glass {
+      @apply bg-black/80 backdrop-blur-md border border-white/20;
+    }
+
+    /* Disable glow effects on mobile */
+    .tech-glow {
+      box-shadow: none;
+    }
+
+    /* Reduce text shadows on mobile */
+    .text-shadow-lg {
+      text-shadow: none;
+    }
+  }
 }
 
 body {
@@ -57,4 +75,22 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #06b6d4;
+}
+
+/* Reduce animations on mobile for better performance */
+@media (max-width: 1023px) {
+  /* Keep animations but reduce expensive effects */
+  body {
+    background-attachment: scroll;
+  }
+
+  /* Reduce blur effects */
+  .backdrop-blur-xl {
+    backdrop-filter: blur(4px) !important;
+  }
+
+  /* Reduce glow effects */
+  .tech-glow {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1) !important;
+  }
 }

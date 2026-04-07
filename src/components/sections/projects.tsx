@@ -66,13 +66,13 @@ const OTHER_REPOS_KEYS = [
 
 export function Projects() {
     return (
-        <section id="projects" className="py-24 backdrop-blur-sm relative z-0 overflow-hidden">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4 font-heading text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] text-shadow-lg">
+        <section id="projects" className="py-12 sm:py-24 backdrop-blur-sm relative z-0 overflow-hidden">
+            <div className="container mx-auto px-3 sm:px-4">
+                <div className="text-center mb-8 sm:mb-16">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 font-heading text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] text-shadow-lg">
                         Featured Projects
                     </h2>
-                    <p className="text-gray-400 text-shadow-sm">
+                    <p className="text-gray-400 text-sm sm:text-base text-shadow-sm">
                         Open source contributions and personal repositories.
                     </p>
                 </div>
