@@ -81,7 +81,7 @@ const LightPillar = ({
       renderer = new THREE.WebGLRenderer({
         antialias: false, alpha: true,
         powerPreference: effectiveQuality === 'high' ? 'high-performance' : 'low-power',
-        precision: settings.precision as THREE.Precision,
+        precision: settings.precision as 'highp' | 'mediump' | 'lowp',
         stencil: false, depth: false,
       });
     } catch {
