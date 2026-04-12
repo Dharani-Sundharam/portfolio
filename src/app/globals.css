@@ -60,7 +60,7 @@ html {
 body {
   background-color: #0f172a;
   color: #f8fafc;
-  overflow: hidden;  /* ScrollControls handles its own scroll internally */
+  overflow-x: hidden; /* Prevent horizontal scroll, allow vertical on mobile */
   width: 100%;
   height: 100%;
 }
