@@ -15,6 +15,10 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Dharani Sundharam - Portfolio",
   description: "Electronics and Communication Engineer | IoT · Embedded · Cybersecurity",
+  icons: {
+    icon: '/images/DS logo.png',
+    apple: '/images/DS logo.png',
+  },
 };
 
 export default function RootLayout({
