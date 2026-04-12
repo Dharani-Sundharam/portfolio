@@ -123,17 +123,17 @@ export default function NvmePanel() {
         transition={{ type: 'spring', damping: 24, stiffness: 180 }}
         style={{
           position: 'absolute', right: 0, top: 0, bottom: 0,
-          width: 580, zIndex: 40, pointerEvents: 'auto',
+          width: 555, zIndex: 40, pointerEvents: 'auto',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          paddingLeft: 28, paddingRight: 67,
-          paddingTop: 56, paddingBottom: 40,
-          overflowY: 'auto',
+          paddingLeft: 26, paddingRight: 58,
+          paddingTop: 32, paddingBottom: 32,
+          overflowY: 'hidden',
         }}
       >
         {/* Header — badge + counter */}
         <motion.div
           initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}
-          style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20, flexShrink: 0 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16, flexShrink: 0 }}
         >
           <span style={{
             fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em',
@@ -163,9 +163,9 @@ export default function NvmePanel() {
           >
             {/* ── Project image ─────────────────────────────── */}
             <div style={{
-              width: '100%', height: 420, borderRadius: 20, overflow: 'hidden', marginBottom: 20,
+              width: '100%', height: 300, borderRadius: 18, overflow: 'hidden', marginBottom: 16,
               border: `1px solid ${p.color}28`,
-              boxShadow: `0 12px 48px rgba(0,0,0,0.55), 0 0 0 1px ${p.color}12`,
+              boxShadow: `0 10px 40px rgba(0,0,0,0.55), 0 0 0 1px ${p.color}12`,
               position: 'relative', flexShrink: 0,
             }}>
               <AutoImageSlider images={p.images || [p.image]} alt={p.title} />
@@ -173,21 +173,21 @@ export default function NvmePanel() {
 
             {/* Title */}
             <div style={{
-              fontSize: 26, fontWeight: 800, color: '#f1f5f9',
-              letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 8, flexShrink: 0,
+              fontSize: 22, fontWeight: 800, color: '#f1f5f9',
+              letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: 7, flexShrink: 0,
             }}>{p.title}</div>
 
             {/* Description */}
             <p style={{
-              fontSize: 14.5, color: '#94a3b8', lineHeight: 1.7,
-              marginBottom: 14, flexShrink: 0,
+              fontSize: 13.5, color: '#94a3b8', lineHeight: 1.65,
+              marginBottom: 12, flexShrink: 0,
             }}>{p.description}</p>
 
             {/* Tech chips */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 18, flexShrink: 0 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14, flexShrink: 0 }}>
               {p.tech.map((tag: string) => (
                 <span key={tag} style={{
-                  fontSize: 12, fontWeight: 600, padding: '5px 14px', borderRadius: 999,
+                  fontSize: 12, fontWeight: 600, padding: '5px 13px', borderRadius: 999,
                   background: `${p.color}0e`, border: `1px solid ${p.color}35`, color: p.color,
                 }}>{tag}</span>
               ))}
@@ -213,7 +213,7 @@ export default function NvmePanel() {
 
         {/* ── Arrow navigation row ──────────────────────────── */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 12, marginTop: 22, flexShrink: 0,
+          display: 'flex', alignItems: 'center', gap: 12, marginTop: 18, flexShrink: 0,
           pointerEvents: 'auto',
         }}>
           {/* ← arrow */}

@@ -79,19 +79,19 @@ function SkillChip({ skill, color, floatDelay }: { skill: string; color: string;
         rotateX, rotateY,
         transformPerspective: 700,
         transformStyle: 'preserve-3d',
-        padding: '9px 18px',
-        borderRadius: 14,
+        padding: '8px 16px',
+        borderRadius: 12,
         background: 'rgba(8,14,40,0.75)',
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)',
         border: `1.5px solid ${color}35`,
         color: '#f1f5f9',
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: 700,
         cursor: 'default',
         display: 'flex',
         alignItems: 'center',
-        gap: 10,
+        gap: 9,
         letterSpacing: '-0.01em',
         userSelect: 'none',
       }}
@@ -135,17 +135,17 @@ export default function RamPanel() {
         transition={{ type: 'spring', damping: 24, stiffness: 180 }}
         style={{
           position: 'absolute', left: 0, top: 0, bottom: 0,
-          width: 560, zIndex: 40, pointerEvents: 'auto',
+          width: 540, zIndex: 40, pointerEvents: 'auto',
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          paddingLeft: 52, paddingRight: 28,
-          paddingTop: 52, paddingBottom: 36,
-          overflowY: 'auto',
+          paddingLeft: 48, paddingRight: 26,
+          paddingTop: 32, paddingBottom: 32,
+          overflowY: 'hidden',
         }}
       >
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: -14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-          style={{ marginBottom: 18, flexShrink: 0 }}
+          style={{ marginBottom: 14, flexShrink: 0 }}
         >
           <span style={{
             fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.22em',
@@ -159,8 +159,8 @@ export default function RamPanel() {
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.22, type: 'spring' }}
           style={{
-            fontSize: 52, fontWeight: 900, color: '#fff',
-            letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: 32, flexShrink: 0,
+            fontSize: 44, fontWeight: 900, color: '#fff',
+            letterSpacing: '-0.04em', lineHeight: 1.0, marginBottom: 22, flexShrink: 0,
           }}
         >
           What I<br />
@@ -171,7 +171,7 @@ export default function RamPanel() {
         </motion.div>
 
         {/* Skill groups */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {SKILL_GROUPS.map((group, gi) => {
             let chipIdx = 0
             SKILL_GROUPS.slice(0, gi).forEach(g => { chipIdx += g.skills.length })
@@ -187,14 +187,14 @@ export default function RamPanel() {
                 <div style={{
                   fontSize: 11, fontWeight: 800, color: group.color,
                   textTransform: 'uppercase', letterSpacing: '0.22em',
-                  marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8,
+                  marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8,
                 }}>
                   <div style={{ width: 24, height: 1.5, background: group.color, borderRadius: 2 }} />
                   {group.label}
                 </div>
 
                 {/* Chips */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
                   {group.skills.map((skill, si) => (
                     <SkillChip
                       key={skill}
