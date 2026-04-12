@@ -43,7 +43,7 @@ export default function CpuPanel() {
           position: 'absolute', left: 0, top: 0, bottom: 0,
           width: 500, zIndex: 40, pointerEvents: 'auto',
           display: 'flex', alignItems: 'center',
-          paddingLeft: 52, paddingRight: 32,
+          paddingLeft: 44, paddingRight: 28,
         }}
       >
         <div style={{ width: '100%' }}>
@@ -52,7 +52,7 @@ export default function CpuPanel() {
           <motion.div
             initial={{ opacity: 0, y: -14 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            style={{ marginBottom: 26 }}
+            style={{ marginBottom: 16 }}
           >
             <span style={{
               fontSize: 15, fontWeight: 800, textTransform: 'uppercase',
@@ -68,21 +68,21 @@ export default function CpuPanel() {
             transition={{ delay: 0.3, type: 'spring' }}
           >
             <div style={{
-              fontSize: 54, fontWeight: 800, color: '#fff',
-              letterSpacing: '-0.03em', lineHeight: 1.0, marginBottom: 12,
+              fontSize: 44, fontWeight: 800, color: '#fff',
+              letterSpacing: '-0.03em', lineHeight: 1.0, marginBottom: 10,
             }}>
               Dharani<br />Sundharam
             </div>
             <div style={{
-              fontSize: 19, color: '#f59e0b', fontWeight: 700,
-              letterSpacing: '0.06em', marginBottom: 22,
+              fontSize: 16, color: '#f59e0b', fontWeight: 700,
+              letterSpacing: '0.06em', marginBottom: 16,
             }}>{profile.role}</div>
           </motion.div>
 
           {/* Tagline */}
           <motion.p
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.44 }}
-            style={{ fontSize: 19.5, color: '#94a3b8', lineHeight: 1.75, marginBottom: 30, maxWidth: 440 }}
+            style={{ fontSize: 15.5, color: '#94a3b8', lineHeight: 1.7, marginBottom: 22, maxWidth: 420 }}
           >
             {profile.tagline}
           </motion.p>
@@ -90,20 +90,20 @@ export default function CpuPanel() {
           {/* Education */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.54 }}>
             <div style={{
-              fontSize: 14.5, fontWeight: 700, color: '#475569',
-              textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 10,
+              fontSize: 12.5, fontWeight: 700, color: '#475569',
+              textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 8,
             }}>Education</div>
             {education.map((edu, i) => (
               <div key={i} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '11px 15px', borderRadius: 13, marginBottom: 8,
+                padding: '9px 13px', borderRadius: 12, marginBottom: 6,
                 background: 'rgba(30,41,59,0.38)', border: '1px solid rgba(71,85,105,0.2)',
               }}>
                 <div>
-                  <div style={{ fontSize: 17.5, color: '#e2e8f0', fontWeight: 600 }}>{edu.degree}</div>
-                  <div style={{ fontSize: 15.5, color: '#64748b' }}>{edu.school}</div>
+                  <div style={{ fontSize: 15, color: '#e2e8f0', fontWeight: 600 }}>{edu.degree}</div>
+                  <div style={{ fontSize: 13, color: '#64748b' }}>{edu.school}</div>
                 </div>
-                <div style={{ fontSize: 15.5, color: '#f59e0b', fontWeight: 700, whiteSpace: 'nowrap', marginLeft: 14 }}>{edu.date}</div>
+                <div style={{ fontSize: 13, color: '#f59e0b', fontWeight: 700, whiteSpace: 'nowrap', marginLeft: 14 }}>{edu.date}</div>
               </div>
             ))}
           </motion.div>
@@ -111,17 +111,17 @@ export default function CpuPanel() {
           {/* Experience */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.64 }}>
             <div style={{
-              fontSize: 14.5, fontWeight: 700, color: '#475569',
-              textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 10, marginTop: 18,
+              fontSize: 12.5, fontWeight: 700, color: '#475569',
+              textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 8, marginTop: 14,
             }}>Experience</div>
             {experience.map((exp, i) => (
               <div key={i} style={{
-                padding: '12px 15px', borderRadius: 13,
+                padding: '10px 13px', borderRadius: 12,
                 background: 'rgba(30,41,59,0.38)', border: '1px solid rgba(71,85,105,0.2)',
               }}>
-                <div style={{ fontSize: 18, color: '#e2e8f0', fontWeight: 700 }}>{exp.role}</div>
-                <div style={{ fontSize: 16.5, color: '#f59e0b', fontWeight: 500, marginBottom: 6 }}>{exp.company}</div>
-                <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6 }}>{exp.description[0]}</div>
+                <div style={{ fontSize: 15.5, color: '#e2e8f0', fontWeight: 700 }}>{exp.role}</div>
+                <div style={{ fontSize: 14, color: '#f59e0b', fontWeight: 500, marginBottom: 5 }}>{exp.company}</div>
+                <div style={{ fontSize: 13.5, color: '#64748b', lineHeight: 1.55 }}>{exp.description[0]}</div>
               </div>
             ))}
           </motion.div>

@@ -163,7 +163,7 @@ export default function NvmePanel() {
           >
             {/* ── Project image ─────────────────────────────── */}
             <div style={{
-              width: '100%', height: 300, borderRadius: 18, overflow: 'hidden', marginBottom: 16,
+              width: '100%', height: 420, borderRadius: 18, overflow: 'hidden', marginBottom: 16,
               border: `1px solid ${p.color}28`,
               boxShadow: `0 10px 40px rgba(0,0,0,0.55), 0 0 0 1px ${p.color}12`,
               position: 'relative', flexShrink: 0,
