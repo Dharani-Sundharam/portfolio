@@ -1,0 +1,127 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "Fibonacci VGA Generator",
+      "title": "16-Bit Fibonacci Generator with custom VGA Output",
+      "description": "A hardware-based Fibonacci sequence validator featuring a custom VGA display controller, built on the ZedBoard FPGA using pure Verilog RTL.",
+      "detail": "Developed during the 48-hour Tantrotsav hackathon. Features a custom Moore FSM, debounced physical inputs, a 16-bit datapath with overflow protection, and a custom-engineered VGA sync controller to render real-time visual output. Secured 4th place out of 48 teams.",
+      "tech": [
+        "Verilog",
+        "Vivado",
+        "FPGA",
+        "Zynq-7000",
+        "VGA Timing Logic"
+      ],
+      "color": "#06b6d4",
+      "meta": "Digital Design · Display Controller",
+      "image": "/images/projects/fpga.jpg",
+      "url": "https://github.com/Dharani-Sundharam/Fibonnaci_VGA.git",
+      "stars": 15,
+      "language": "Verilog"
+    },
+    {
+      "id": 2,
+      "name": "Speleo-X",
+      "title": "Speleo-X",
+      "description": "A low-cost, ROS-based ground robot designed for GPS-denied cave environments, featuring custom 3D laser-stitching and AI-driven mineral classification.",
+      "detail": "Engineered an autonomous platform using 2D LiDAR, IMU, and wheel odometry, fused via a custom push-broom stitching node to extrude volumetric 3D maps. Integrated a synthetic-NIR spectral pipeline and a MobileNetV2 CNN on edge compute to classify geological formations with up to 97.9% confidence in zero-light conditions.",
+      "tech": [
+        "ROS",
+        "Python",
+        "LiDAR SLAM",
+        "MobileNetV2",
+        "Sensor Fusion"
+      ],
+      "color": "#f97316",
+      "meta": "Robotics · Autonomous Navigation",
+      "images": [
+        "/images/projects/speleo-x.png",
+        "/images/projects/speleo-x1.jpg"
+      ],
+      "url": "https://github.com/Dharani-Sundharam/Speleo-X",
+      "stars": 24,
+      "language": "Python / C++"
+    },
+    {
+      "id": 3,
+      "name": "DriveSync",
+      "title": "DriveSync — V2V Communication",
+      "description": "Engineered a real-time V2V communication platform using ESP-NOW with <5ms latency for collision avoidance and decentralized navigation.",
+      "detail": "Built a peer-to-peer vehicular communication system using Python, ROS, and YDLIDAR sensors. SLAM-based navigation with a custom control codebase. Broadcasts speed, heading, and emergency alerts to all vehicles within 200m at sub-5ms latency.",
+      "tech": [
+        "Python",
+        "ROS",
+        "YDLIDAR",
+        "SLAM",
+        "ESP-NOW"
+      ],
+      "color": "#38bdf8",
+      "meta": "Embedded · Autonomous",
+      "image": "/images/projects/Drivesync1.png",
+      "url": "https://github.com/Dharani-Sundharam/DriveSync",
+      "stars": 12,
+      "language": "Python"
+    },
+    {
+      "id": 4,
+      "name": "4-bit Calculator",
+      "title": "4-Bit ALU Calculator",
+      "description": "Hardware implementation of a 4-bit arithmetic calculator using discrete logic components and C++. Supports addition, subtraction, and multiplication with 8-bit output.",
+      "detail": "Built a 4-bit ALU from fundamental logic gates — implements ADD, SUB, AND, OR, XOR with carry-in/out, overflow detection, and 7-segment display output. Designed PCB layout and verified with simulation before fabrication.",
+      "tech": [
+        "C++",
+        "Digital Logic",
+        "VHDL",
+        "Circuit Design",
+        "PCB"
+      ],
+      "color": "#f59e0b",
+      "meta": "Hardware · Digital Logic",
+      "image": "/images/projects/4_bit_calc.jpeg",
+      "url": "https://github.com/Dharani-Sundharam/4-bit-calculator",
+      "stars": 8,
+      "language": "C++"
+    },
+    {
+      "id": 5,
+      "name": "Smart Vending Machine",
+      "title": "Smart Medicine Vending Machine",
+      "description": "Developed a sustainable healthcare solution providing 24/7 access to essential medicines in remote areas using Raspberry Pi, RFID, and Flask.",
+      "detail": "Deployed in remote villages — no pharmacist needed. Uses Raspberry Pi for processing, RFID prescription verification, Flask backend for real-time inventory management, and temperature-controlled compartments for sensitive medicines.",
+      "tech": [
+        "Raspberry Pi",
+        "RFID",
+        "Flask",
+        "Python",
+        "IoT"
+      ],
+      "color": "#34d399",
+      "meta": "Healthcare · IoT",
+      "image": "/images/projects/vending_machine.jpeg",
+      "url": "",
+      "stars": 15,
+      "language": "Python"
+    },
+    {
+      "id": 6,
+      "name": "Fiber-Optics Light Collector",
+      "title": "Fiber-Optic Solar Light Collector",
+      "description": "A solar collector concentrating sunlight via a matrix of solar luminescence concentrators made of fiber optic material, guiding light to replace electrical lighting.",
+      "detail": "Array of fiber-optic solar luminescence concentrators collect and concentrate sunlight into fiber optic cables, guiding it to interior spaces. Reduces electricity consumption by replacing artificial lighting during daylight hours.",
+      "tech": [
+        "Fiber Optics",
+        "Photonics",
+        "Python",
+        "CAD",
+        "Fusion 360"
+      ],
+      "color": "#a855f7",
+      "meta": "Photonics · Sustainability",
+      "image": "/images/projects/optic.jpg",
+      "url": "https://github.com/Dharani-Sundharam/Optic_light",
+      "stars": 15,
+      "language": "Python"
+    }
+  ]
+}

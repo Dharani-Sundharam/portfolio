@@ -53,11 +53,22 @@
   }
 }
 
-body {
-  background-color: #000000;
-  color: #f8fafc;
-  overflow-x: hidden;
+html {
+  height: 100%;
 }
+
+body {
+  background-color: #0f172a;
+  color: #f8fafc;
+  overflow: hidden;  /* ScrollControls handles its own scroll internally */
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  display: block; /* Remove phantom bottom gap */
+}
+
 
 /* Custom scrollbar for tech feel */
 ::-webkit-scrollbar {
