@@ -93,6 +93,12 @@ export default function NvmePanel() {
     }
   }, [idx])
 
+  const cardVariants = {
+    initial: (d: number) => ({ x: d * 90, opacity: 0 }),
+    animate: { x: 0, opacity: 1 },
+    exit: (d: number) => ({ x: d * -70, opacity: 0 }),
+  }
+
   const p = PROJECTS[idx]
 
   return (
@@ -148,9 +154,10 @@ export default function NvmePanel() {
           <motion.div
             key={idx}
             custom={dir}
-            initial={(d: number) => ({ x: d * 90, opacity: 0 })}
-            animate={{ x: 0, opacity: 1 }}
-            exit={(d: number) => ({ x: d * -70, opacity: 0 })}
+            variants={cardVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
             transition={{ type: 'spring', stiffness: 280, damping: 28 }}
             style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', minHeight: 0 }}
           >
