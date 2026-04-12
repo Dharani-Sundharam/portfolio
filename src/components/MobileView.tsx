@@ -109,8 +109,8 @@ export default function MobileView() {
           </p>
 
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {profile.github && (
-              <a href={profile.github} target="_blank" rel="noopener noreferrer" style={{
+            {profile.social?.github && (
+              <a href={profile.social.github} target="_blank" rel="noopener noreferrer" style={{
                 padding: '10px 22px', borderRadius: 12,
                 background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(103,232,249,0.3)',
                 color: '#67e8f9', fontWeight: 700, fontSize: 13.5, textDecoration: 'none',
@@ -118,8 +118,8 @@ export default function MobileView() {
                 GitHub ↗
               </a>
             )}
-            {profile.linkedin && (
-              <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" style={{
+            {profile.social?.linkedin && (
+              <a href={profile.social.linkedin} target="_blank" rel="noopener noreferrer" style={{
                 padding: '10px 22px', borderRadius: 12,
                 background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(167,139,250,0.3)',
                 color: '#a78bfa', fontWeight: 700, fontSize: 13.5, textDecoration: 'none',
