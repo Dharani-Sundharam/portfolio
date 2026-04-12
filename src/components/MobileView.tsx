@@ -108,7 +108,7 @@ export default function MobileView() {
             {profile.tagline}
           </p>
 
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
             {profile.social?.github && (
               <a href={profile.social.github} target="_blank" rel="noopener noreferrer" style={{
                 padding: '10px 22px', borderRadius: 12,
@@ -128,6 +128,26 @@ export default function MobileView() {
               </a>
             )}
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            style={{
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(103,232,249,0.25)',
+              borderRadius: 20, padding: '24px 20px', backdropFilter: 'blur(12px)',
+              margin: '0 auto', maxWidth: 360, textAlign: 'center'
+            }}
+          >
+            <div style={{ fontSize: 32, marginBottom: 10 }}>🖥️</div>
+            <div style={{ fontSize: 16, fontWeight: 800, color: '#f1f5f9', letterSpacing: '-0.01em', marginBottom: 4 }}>
+              Best experience on PC
+            </div>
+            <div style={{ fontSize: 12.5, color: '#94a3b8', lineHeight: 1.6 }}>
+              (Interactive 3D motherboard disabled on mobile)
+            </div>
+          </motion.div>
         </motion.section>
 
         {/* -- EXPERIENCE -- */}
