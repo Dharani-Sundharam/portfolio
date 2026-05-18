@@ -1,9 +1,10 @@
 'use client'
 
-import { Suspense, useRef, useMemo, useState, useEffect } from 'react'
+import { Suspense, useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ContactShadows, Environment, useGLTF, useProgress } from '@react-three/drei'
+import { ContactShadows, Environment, PerformanceMonitor, useGLTF, useProgress } from '@react-three/drei'
 import * as THREE from 'three'
+import { canvasDprForTier, getPerfTier, type PerfTier } from '@/lib/perfTier'
 import { motion, AnimatePresence } from 'framer-motion'
 import { sections } from '@/data/sections'
 import ScrollProgressNav from '@/components/ui/ScrollProgressNav'
@@ -76,25 +77,30 @@ function getSection(t: number): string {
 }
 
 // ─── Motherboard ─────────────────────────────────────────────────────────────
-function Motherboard() {
+function Motherboard({ tier }: { tier: PerfTier }) {
   const { scene } = useGLTF('/motherboard.glb')
   const groupRef = useRef<THREE.Group>(null!)
+  const shadowsOn = tier === 'high'
 
-  useMemo(() => {
+  useEffect(() => {
     scene.traverse((child) => {
       const mesh = child as THREE.Mesh
       if (!mesh.isMesh) return
-      mesh.castShadow = true; mesh.receiveShadow = true
+      mesh.castShadow = shadowsOn
+      mesh.receiveShadow = shadowsOn
       const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
       mats.forEach((mat) => {
         const m = mat as THREE.MeshStandardMaterial
-        if (m?.isMeshStandardMaterial) { m.envMapIntensity = 0.8; m.needsUpdate = true }
+        if (m?.isMeshStandardMaterial) {
+          m.envMapIntensity = tier === 'low' ? 0.35 : 0.8
+          m.needsUpdate = true
+        }
       })
     })
-  }, [scene])
+  }, [scene, shadowsOn, tier])
 
   useFrame((state) => {
-    if (!groupRef.current) return
+    if (!groupRef.current || tier === 'low') return
     const targetX = (state.pointer.x * Math.PI) / 90
     const targetY = (state.pointer.y * Math.PI) / 90
     groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetX, 0.06)
@@ -118,6 +124,7 @@ function LoadingMesh() {
 function DynamicLights() {
   const activeSections = sections.slice(1)
   const lightRefs = useRef<(THREE.PointLight | null)[]>(new Array(activeSections.length).fill(null))
+  const targetColor = useRef(new THREE.Color())
 
   useFrame(() => {
     const sectionId = getSection(scrollState.offset)
@@ -126,7 +133,8 @@ function DynamicLights() {
       if (!light) return
       const isActive = section.id === sectionId
       light.intensity = THREE.MathUtils.lerp(light.intensity, isActive ? 5 : 0, 0.05)
-      light.color.lerp(new THREE.Color(isActive ? section.lightColor : '#000000'), 0.05)
+      targetColor.current.set(isActive ? section.lightColor : '#000000')
+      light.color.lerp(targetColor.current, 0.05)
     })
   })
 
@@ -318,19 +326,33 @@ function IntroHero() {
 
 
 // ─── 3D Scene ─────────────────────────────────────────────────────────────────
-function Scene() {
+function Scene({ tier }: { tier: PerfTier }) {
+  const shadowsOn = tier === 'high'
+  const shadowMap = tier === 'high' ? 2048 : 1024
+
   return (
     <>
-      <ambientLight intensity={0.3} />
-      <Suspense fallback={null}><Environment preset="city" background={false} /></Suspense>
-      <hemisphereLight args={['#7c3aed', '#1e1b4b', 3.5]} />
-      <directionalLight position={[0, 12, 3]} intensity={1.8} color="#fff5e0" castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
-      <directionalLight position={[-8, 4, 4]} intensity={2.0} color="#8484fcff" />
-      <directionalLight position={[8, 4, 4]} intensity={2.0} color="#38bdf8" />
+      <ambientLight intensity={tier === 'low' ? 0.55 : 0.3} />
+      {tier === 'high' && (
+        <Suspense fallback={null}><Environment preset="city" background={false} /></Suspense>
+      )}
+      <hemisphereLight args={['#7c3aed', '#1e1b4b', tier === 'low' ? 2.2 : 3.5]} />
+      <directionalLight
+        position={[0, 12, 3]}
+        intensity={1.8}
+        color="#fff5e0"
+        castShadow={shadowsOn}
+        shadow-mapSize-width={shadowMap}
+        shadow-mapSize-height={shadowMap}
+      />
+      <directionalLight position={[-8, 4, 4]} intensity={tier === 'low' ? 1.2 : 2.0} color="#8484fcff" />
+      <directionalLight position={[8, 4, 4]} intensity={tier === 'low' ? 1.2 : 2.0} color="#38bdf8" />
       <DynamicLights />
       <CameraRig />
-      <ContactShadows position={[0, -0.5, 0]} opacity={0.55} scale={16} blur={3.5} far={3} color="#1e1b4b" />
-      <Suspense fallback={<LoadingMesh />}><Motherboard /></Suspense>
+      {tier === 'high' && (
+        <ContactShadows position={[0, -0.5, 0]} opacity={0.55} scale={16} blur={3.5} far={3} color="#1e1b4b" />
+      )}
+      <Suspense fallback={<LoadingMesh />}><Motherboard tier={tier} /></Suspense>
     </>
   )
 }
@@ -361,8 +383,35 @@ function GlobalLoading() {
   )
 }
 
+function PillarFallback() {
+  return (
+    <motion.div
+      aria-hidden
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.2 }}
+      style={{
+        position: 'absolute',
+        inset: 0,
+        background:
+          'radial-gradient(ellipse 55% 70% at 58% 42%, rgba(4,120,87,0.35) 0%, rgba(14,116,144,0.18) 45%, transparent 72%)',
+        mixBlendMode: 'screen',
+      }}
+    />
+  )
+}
+
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function InteractiveBoard() {
+  const [tier, setTier] = useState<PerfTier>('medium')
+  const [dpr, setDpr] = useState(1.25)
+
+  useEffect(() => {
+    const detected = getPerfTier()
+    setTier(detected)
+    const [, max] = canvasDprForTier(detected)
+    setDpr(max)
+  }, [])
 
   useEffect(() => {
     let lastScrollTime = 0
@@ -421,22 +470,26 @@ export default function InteractiveBoard() {
         backgroundSize: '200px 200px', opacity: 0.4,
       }} />
 
-      {/* LightPillar background — zIndex 1, below Three.js canvas */}
+      {/* LightPillar: separate WebGL context — CSS fallback on low tier */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
-        <LightPillar
-          topColor="#047857"
-          bottomColor="#0e7490"
-          intensity={1.2}
-          rotationSpeed={0.3}
-          glowAmount={0.0025}
-          pillarWidth={4.4}
-          pillarHeight={0.8}
-          noiseIntensity={0.4}
-          pillarRotation={125}
-          interactive={false}
-          mixBlendMode="screen"
-          quality="high"
-        />
+        {tier === 'low' ? (
+          <PillarFallback />
+        ) : (
+          <LightPillar
+            topColor="#047857"
+            bottomColor="#0e7490"
+            intensity={1.2}
+            rotationSpeed={0.3}
+            glowAmount={0.0025}
+            pillarWidth={4.4}
+            pillarHeight={0.8}
+            noiseIntensity={0.4}
+            pillarRotation={125}
+            interactive={false}
+            mixBlendMode="screen"
+            quality={tier === 'high' ? 'medium' : 'low'}
+          />
+        )}
       </div>
 
 
@@ -446,12 +499,30 @@ export default function InteractiveBoard() {
 
       <Canvas
         camera={{ position: [-5.365, 1.328, 4.679], fov: 50, near: 0.1, far: 100 }}
-        gl={{ antialias: true, toneMappingExposure: 1.3, toneMapping: THREE.ACESFilmicToneMapping, alpha: true }}
+        gl={{
+          antialias: tier !== 'low',
+          toneMappingExposure: 1.3,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          alpha: true,
+          powerPreference: tier === 'low' ? 'low-power' : 'high-performance',
+          stencil: false,
+        }}
         style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'transparent' }}
-        shadows="soft"
-        dpr={[1, 2]}
+        shadows={tier === 'high'}
+        dpr={dpr}
+        performance={{ min: 0.5, max: 1, debounce: 250 }}
       >
-        <Scene />
+        <PerformanceMonitor
+          bounds={() => (tier === 'high' ? [50, 58] : [42, 50])}
+          flipflops={3}
+          onDecline={() => setDpr((prev) => Math.max(0.75, prev - 0.25))}
+          onIncline={() => {
+            const [, max] = canvasDprForTier(tier)
+            setDpr((prev) => Math.min(max, prev + 0.15))
+          }}
+        >
+          <Scene tier={tier} />
+        </PerformanceMonitor>
       </Canvas>
     </div>
   )
