@@ -2,9 +2,10 @@
 
 import { Suspense, useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ContactShadows, Environment, PerformanceMonitor, useGLTF, useProgress } from '@react-three/drei'
+import { PerformanceMonitor, useGLTF, useProgress } from '@react-three/drei'
 import * as THREE from 'three'
 import { canvasDprForTier, getPerfTier, type PerfTier } from '@/lib/perfTier'
+import { ScrollUiProvider, useScrollUiContext } from '@/lib/scrollUiContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import { sections } from '@/data/sections'
 import ScrollProgressNav from '@/components/ui/ScrollProgressNav'
@@ -15,7 +16,6 @@ import CpuPanel from '@/components/overlays/CpuPanel'
 import RamPanel from '@/components/overlays/RamPanel'
 import NvmePanel from '@/components/overlays/NvmePanel'
 import IoPanel from '@/components/overlays/IoPanel'
-import LightPillar from '@/components/LightPillar'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // KEYFRAMES
@@ -40,7 +40,10 @@ function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
 }
 
-function sampleKeyframes(t: number): { pos: THREE.Vector3; look: THREE.Vector3 } {
+const _targetPos = new THREE.Vector3()
+const _targetLook = new THREE.Vector3()
+
+function sampleKeyframesInto(t: number, pos: THREE.Vector3, look: THREE.Vector3) {
   const tc = Math.max(0, Math.min(1, t))
   let fromIdx = 0
   for (let i = 0; i < KEYFRAMES.length - 1; i++) {
@@ -50,18 +53,16 @@ function sampleKeyframes(t: number): { pos: THREE.Vector3; look: THREE.Vector3 }
   const to = KEYFRAMES[Math.min(fromIdx + 1, KEYFRAMES.length - 1)]
   const span = to.t - from.t
   const e = easeInOutCubic(Math.max(0, Math.min(1, span < 0.0001 ? 1 : (tc - from.t) / span)))
-  return {
-    pos: new THREE.Vector3(
-      THREE.MathUtils.lerp(from.pos[0], to.pos[0], e),
-      THREE.MathUtils.lerp(from.pos[1], to.pos[1], e),
-      THREE.MathUtils.lerp(from.pos[2], to.pos[2], e),
-    ),
-    look: new THREE.Vector3(
-      THREE.MathUtils.lerp(from.look[0], to.look[0], e),
-      THREE.MathUtils.lerp(from.look[1], to.look[1], e),
-      THREE.MathUtils.lerp(from.look[2], to.look[2], e),
-    ),
-  }
+  pos.set(
+    THREE.MathUtils.lerp(from.pos[0], to.pos[0], e),
+    THREE.MathUtils.lerp(from.pos[1], to.pos[1], e),
+    THREE.MathUtils.lerp(from.pos[2], to.pos[2], e),
+  )
+  look.set(
+    THREE.MathUtils.lerp(from.look[0], to.look[0], e),
+    THREE.MathUtils.lerp(from.look[1], to.look[1], e),
+    THREE.MathUtils.lerp(from.look[2], to.look[2], e),
+  )
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -77,38 +78,28 @@ function getSection(t: number): string {
 }
 
 // ─── Motherboard ─────────────────────────────────────────────────────────────
-function Motherboard({ tier }: { tier: PerfTier }) {
+function Motherboard() {
   const { scene } = useGLTF('/motherboard.glb')
-  const groupRef = useRef<THREE.Group>(null!)
-  const shadowsOn = tier === 'high'
 
   useEffect(() => {
     scene.traverse((child) => {
       const mesh = child as THREE.Mesh
       if (!mesh.isMesh) return
-      mesh.castShadow = shadowsOn
-      mesh.receiveShadow = shadowsOn
+      mesh.castShadow = false
+      mesh.receiveShadow = false
       const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
       mats.forEach((mat) => {
         const m = mat as THREE.MeshStandardMaterial
         if (m?.isMeshStandardMaterial) {
-          m.envMapIntensity = tier === 'low' ? 0.35 : 0.8
+          m.envMapIntensity = 0.45
           m.needsUpdate = true
         }
       })
     })
-  }, [scene, shadowsOn, tier])
-
-  useFrame((state) => {
-    if (!groupRef.current || tier === 'low') return
-    const targetX = (state.pointer.x * Math.PI) / 90
-    const targetY = (state.pointer.y * Math.PI) / 90
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetX, 0.06)
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -targetY, 0.06)
-  })
+  }, [scene])
 
   return (
-    <group ref={groupRef}>
+    <group>
       <primitive object={scene} scale={1} position={[-0.318, 0.051, 7.244]} />
     </group>
   )
@@ -124,17 +115,18 @@ function LoadingMesh() {
 function DynamicLights() {
   const activeSections = sections.slice(1)
   const lightRefs = useRef<(THREE.PointLight | null)[]>(new Array(activeSections.length).fill(null))
-  const targetColor = useRef(new THREE.Color())
+  const lastSection = useRef('')
 
   useFrame(() => {
     const sectionId = getSection(scrollState.offset)
+    if (sectionId === lastSection.current) return
+    lastSection.current = sectionId
     activeSections.forEach((section, i) => {
       const light = lightRefs.current[i]
       if (!light) return
       const isActive = section.id === sectionId
-      light.intensity = THREE.MathUtils.lerp(light.intensity, isActive ? 5 : 0, 0.05)
-      targetColor.current.set(isActive ? section.lightColor : '#000000')
-      light.color.lerp(targetColor.current, 0.05)
+      light.intensity = isActive ? 4 : 0
+      light.color.set(isActive ? section.lightColor : '#000000')
     })
   })
 
@@ -157,9 +149,9 @@ function CameraRig() {
   const lookRef = useRef(new THREE.Vector3(1.450, 1.093, 1.060))
 
   useFrame(() => {
-    const { pos, look } = sampleKeyframes(scrollState.offset)
-    posRef.current.lerp(pos, 0.03)
-    lookRef.current.lerp(look, 0.03)
+    sampleKeyframesInto(scrollState.offset, _targetPos, _targetLook)
+    posRef.current.lerp(_targetPos, 0.06)
+    lookRef.current.lerp(_targetLook, 0.06)
     camera.position.copy(posRef.current)
     camera.lookAt(lookRef.current)
   })
@@ -169,21 +161,7 @@ function CameraRig() {
 
 // ─── Section Panel Router ─────────────────────────────────────────────────────
 function ScreenPanels() {
-  const [activeId, setActiveId] = useState('intro')
-  const [transitioning, setTransitioning] = useState(false)
-  const rafRef = useRef<number>(0)
-
-  useEffect(() => {
-    const tick = () => {
-      const id = getSection(scrollState.offset)
-      const snapping = isSnapping()
-      setActiveId(prev => prev === id ? prev : id)
-      setTransitioning(prev => prev === snapping ? prev : snapping)
-      rafRef.current = requestAnimationFrame(tick)
-    }
-    rafRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [])
+  const { sectionId: activeId, snapping: transitioning } = useScrollUiContext()
 
   // Hide all panels while camera is flying — they exit with slide animations,
   // then the destination panel slides in once the snap settles.
@@ -223,21 +201,7 @@ function ScreenPanels() {
 
 // ─── Intro / Outro Hero ─────────────────────────────────────────────────────
 function IntroHero() {
-  const [visible, setVisible] = useState(true)
-  const [isOutro, setIsOutro] = useState(false)
-  const rafRef = useRef<number>(0)
-
-  useEffect(() => {
-    const tick = () => {
-      const t = scrollState.offset
-      const outro = t > 0.92
-      setVisible(t < 0.12 || outro)
-      setIsOutro(outro)
-      rafRef.current = requestAnimationFrame(tick)
-    }
-    rafRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [])
+  const { heroVisible: visible, isOutro } = useScrollUiContext()
 
   return (
     <AnimatePresence>
@@ -326,33 +290,17 @@ function IntroHero() {
 
 
 // ─── 3D Scene ─────────────────────────────────────────────────────────────────
-function Scene({ tier }: { tier: PerfTier }) {
-  const shadowsOn = tier === 'high'
-  const shadowMap = tier === 'high' ? 2048 : 1024
-
+function Scene() {
   return (
     <>
-      <ambientLight intensity={tier === 'low' ? 0.55 : 0.3} />
-      {tier === 'high' && (
-        <Suspense fallback={null}><Environment preset="city" background={false} /></Suspense>
-      )}
-      <hemisphereLight args={['#7c3aed', '#1e1b4b', tier === 'low' ? 2.2 : 3.5]} />
-      <directionalLight
-        position={[0, 12, 3]}
-        intensity={1.8}
-        color="#fff5e0"
-        castShadow={shadowsOn}
-        shadow-mapSize-width={shadowMap}
-        shadow-mapSize-height={shadowMap}
-      />
-      <directionalLight position={[-8, 4, 4]} intensity={tier === 'low' ? 1.2 : 2.0} color="#8484fcff" />
-      <directionalLight position={[8, 4, 4]} intensity={tier === 'low' ? 1.2 : 2.0} color="#38bdf8" />
+      <ambientLight intensity={0.5} />
+      <hemisphereLight args={['#7c3aed', '#1e1b4b', 2.8]} />
+      <directionalLight position={[0, 12, 3]} intensity={1.6} color="#fff5e0" />
+      <directionalLight position={[-8, 4, 4]} intensity={1.4} color="#8484fc" />
+      <directionalLight position={[8, 4, 4]} intensity={1.4} color="#38bdf8" />
       <DynamicLights />
       <CameraRig />
-      {tier === 'high' && (
-        <ContactShadows position={[0, -0.5, 0]} opacity={0.55} scale={16} blur={3.5} far={3} color="#1e1b4b" />
-      )}
-      <Suspense fallback={<LoadingMesh />}><Motherboard tier={tier} /></Suspense>
+      <Suspense fallback={<LoadingMesh />}><Motherboard /></Suspense>
     </>
   )
 }
@@ -385,17 +333,13 @@ function GlobalLoading() {
 
 function PillarFallback() {
   return (
-    <motion.div
+    <div
       aria-hidden
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1.2 }}
       style={{
         position: 'absolute',
         inset: 0,
         background:
-          'radial-gradient(ellipse 55% 70% at 58% 42%, rgba(4,120,87,0.35) 0%, rgba(14,116,144,0.18) 45%, transparent 72%)',
-        mixBlendMode: 'screen',
+          'radial-gradient(ellipse 55% 70% at 58% 42%, rgba(4,120,87,0.38) 0%, rgba(14,116,144,0.2) 45%, transparent 72%)',
       }}
     />
   )
@@ -404,13 +348,19 @@ function PillarFallback() {
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function InteractiveBoard() {
   const [tier, setTier] = useState<PerfTier>('medium')
-  const [dpr, setDpr] = useState(1.25)
+  const [dpr, setDpr] = useState(1)
+  const [canvasActive, setCanvasActive] = useState(true)
 
   useEffect(() => {
     const detected = getPerfTier()
     setTier(detected)
-    const [, max] = canvasDprForTier(detected)
-    setDpr(max)
+    setDpr(canvasDprForTier(detected))
+  }, [])
+
+  useEffect(() => {
+    const onVis = () => setCanvasActive(document.visibilityState === 'visible')
+    document.addEventListener('visibilitychange', onVis)
+    return () => document.removeEventListener('visibilitychange', onVis)
   }, [])
 
   useEffect(() => {
@@ -463,65 +413,44 @@ export default function InteractiveBoard() {
     }}>
       <GlobalLoading />
       
-      {/* Grain overlay */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.75\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.03\'/%3E%3C/svg%3E")',
-        backgroundSize: '200px 200px', opacity: 0.4,
-      }} />
-
-      {/* LightPillar: separate WebGL context — CSS fallback on low tier */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
-        {tier === 'low' ? (
-          <PillarFallback />
-        ) : (
-          <LightPillar
-            topColor="#047857"
-            bottomColor="#0e7490"
-            intensity={1.2}
-            rotationSpeed={0.3}
-            glowAmount={0.0025}
-            pillarWidth={4.4}
-            pillarHeight={0.8}
-            noiseIntensity={0.4}
-            pillarRotation={125}
-            interactive={false}
-            mixBlendMode="screen"
-            quality={tier === 'high' ? 'medium' : 'low'}
-          />
-        )}
+        <PillarFallback />
       </div>
 
 
-      <ScrollProgressNav />
-      <IntroHero />
-      <ScreenPanels />
+      <ScrollUiProvider>
+        <ScrollProgressNav />
+        <IntroHero />
+        <ScreenPanels />
+      </ScrollUiProvider>
 
       <Canvas
+        frameloop={canvasActive ? 'always' : 'never'}
         camera={{ position: [-5.365, 1.328, 4.679], fov: 50, near: 0.1, far: 100 }}
         gl={{
-          antialias: tier !== 'low',
+          antialias: false,
           toneMappingExposure: 1.3,
           toneMapping: THREE.ACESFilmicToneMapping,
-          alpha: true,
-          powerPreference: tier === 'low' ? 'low-power' : 'high-performance',
+          alpha: false,
+          powerPreference: 'high-performance',
           stencil: false,
+          depth: true,
         }}
         style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'transparent' }}
-        shadows={tier === 'high'}
+        shadows={false}
         dpr={dpr}
-        performance={{ min: 0.5, max: 1, debounce: 250 }}
+        performance={{ min: 0.5, max: 1, debounce: 200 }}
       >
         <PerformanceMonitor
-          bounds={() => (tier === 'high' ? [50, 58] : [42, 50])}
-          flipflops={3}
+          bounds={() => [40, 50]}
+          flipflops={2}
           onDecline={() => setDpr((prev) => Math.max(0.75, prev - 0.25))}
           onIncline={() => {
-            const [, max] = canvasDprForTier(tier)
-            setDpr((prev) => Math.min(max, prev + 0.15))
+            const max = canvasDprForTier(tier)
+            setDpr((prev) => Math.min(max, prev + 0.1))
           }}
         >
-          <Scene tier={tier} />
+          <Scene />
         </PerformanceMonitor>
       </Canvas>
     </div>
