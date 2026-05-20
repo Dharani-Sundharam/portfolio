@@ -32,6 +32,7 @@ export default function Home() {
   // Don't render until we know screen size (avoids flash)
   if (isMobile === null) return null
 
+  // Mobile: scroll layout only — no 3D board, no WebGL / graphics-acceleration prompt
   if (isMobile) {
     return (
       <main className="w-full min-h-screen overflow-y-auto bg-slate-950">
@@ -40,6 +41,7 @@ export default function Home() {
     )
   }
 
+  // Desktop: 3D motherboard (WebGL check lives inside InteractiveBoard)
   return (
     <main className="w-full h-screen overflow-hidden bg-slate-950">
       <InteractiveBoard />

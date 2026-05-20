@@ -1,6 +1,8 @@
 'use client'
 
-import { Suspense, useRef, useState, useEffect } from 'react'
+import { Suspense, useRef, useState, useEffect, useCallback } from 'react'
+import WebGLAccelerationPrompt from '@/components/board/WebGLAccelerationPrompt'
+import { useWebGLCapability } from '@/hooks/useWebGLCapability'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { PerformanceMonitor, useGLTF, useProgress } from '@react-three/drei'
 import * as THREE from 'three'
@@ -345,8 +347,25 @@ function PillarFallback() {
   )
 }
 
-// ─── Root ─────────────────────────────────────────────────────────────────────
-export default function InteractiveBoard() {
+function BoardChecking() {
+  return (
+    <div
+      className="w-full h-screen flex items-center justify-center"
+      style={{
+        background:
+          'radial-gradient(ellipse 120% 80% at 60% 40%, #0d0b2a 0%, #04051a 45%, #020310 100%)',
+      }}
+    >
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-10 h-10 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
+        <p className="text-slate-500 text-sm tracking-widest uppercase">Checking graphics…</p>
+      </div>
+    </div>
+  )
+}
+
+// ─── Root (desktop 3D only — mobile uses MobileView in page.tsx) ───────────────
+function BoardExperience({ onGpuLost }: { onGpuLost: () => void }) {
   const [tier, setTier] = useState<PerfTier>('medium')
   const [dpr, setDpr] = useState(1)
   const [canvasActive, setCanvasActive] = useState(true)
@@ -436,6 +455,14 @@ export default function InteractiveBoard() {
           stencil: false,
           depth: true,
         }}
+        onCreated={({ gl }) => {
+          const canvas = gl.domElement
+          const onLost = (e: Event) => {
+            e.preventDefault()
+            onGpuLost()
+          }
+          canvas.addEventListener('webglcontextlost', onLost)
+        }}
         style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'transparent' }}
         shadows={false}
         dpr={dpr}
@@ -455,6 +482,26 @@ export default function InteractiveBoard() {
       </Canvas>
     </div>
   )
+}
+
+export default function InteractiveBoard() {
+  const { capability, reason } = useWebGLCapability()
+  const [gpuLost, setGpuLost] = useState(false)
+  const onGpuLost = useCallback(() => setGpuLost(true), [])
+
+  if (capability === 'checking') {
+    return <BoardChecking />
+  }
+
+  if (capability === 'fallback' || gpuLost) {
+    return (
+      <WebGLAccelerationPrompt
+        reason={gpuLost ? 'WebGL context was lost. Re-enable graphics acceleration and reload.' : reason}
+      />
+    )
+  }
+
+  return <BoardExperience onGpuLost={onGpuLost} />
 }
 
 useGLTF.preload('/motherboard.glb')
