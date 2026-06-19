@@ -122,6 +122,26 @@
       "url": "https://github.com/Dharani-Sundharam/Optic_light",
       "stars": 15,
       "language": "Python"
+    },
+    {
+      "id": 7,
+      "name": "Digital Hearing Assistant",
+      "title": "Custom Digital Hearing Assistant — PSAP",
+      "description": "A fully functional, real-time Personal Sound Amplification Product (PSAP) hand-built for under ₹2,500 using ESP32-S3, dual MEMS microphones, and real-time DSP — replacing a ₹15,000 service bill.",
+      "detail": "Features a 3rd-order digital Butterworth bandpass filter (300–3,400 Hz) for vocal isolation, dual INMP441 MEMS microphones in true stereo I2S, and a UDA1334A DAC with internal PLL clock synthesis. Hardware-accelerated vector instructions crunch DMA audio buffers at sub-20ms round-trip latency. Hand-soldered on a castellated 1.27mm pitch board with intentional GPIO spacing to neutralize parasitic capacitance. Powered by a 1S LiPo through a TP4056 + ultra-low-noise 5V boost converter for 8+ hours of runtime.",
+      "tech": [
+        "ESP32-S3",
+        "DSP",
+        "I2S",
+        "C/C++",
+        "Analog Design"
+      ],
+      "color": "#ec4899",
+      "meta": "Embedded · Audio DSP",
+      "image": "/images/projects/PSAP.jpeg",
+      "url": "https://github.com/Dharani-Sundharam/Hearing-Aid.git",
+      "stars": 20,
+      "language": "C / C++"
     }
   ]
 }
