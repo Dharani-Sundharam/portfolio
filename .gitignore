@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Win7 reference material — assets already extracted into /public/win7
+/win7.zip
+/Original Win7 Icons.zip
+/login screen.mp4
+/win7site/
+/windows_7_rc1_tuneup_pack_by_cheemster_d1x2gxo.zip

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import "7.css/dist/7.scoped.css";
 import "./globals.css";
 
 const inter = Inter({

@@ -4,9 +4,54 @@
   --font-sans: var(--font-inter);
   --font-heading: var(--font-jakarta);
 
+  /* Windows 7 typography — Segoe UI with a robust cross-platform fallback stack
+     (DejaVu Sans / Helvetica Neue keep it accurate on Linux & macOS). */
+  --font-win7: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+  /* For cmd.exe / Notepad-style content. */
+  --font-win7-mono: Consolas, "Lucida Console", "DejaVu Sans Mono", "Courier New", monospace;
+
   /* Monochrome Accent */
   --color-space-black: #000000;
   --color-space-accent: #ffffff;
+}
+
+/* Frutiger Aero prototype — slow drifting bubbles (duration set inline per bubble). */
+@keyframes aero-float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(8px, -28px); }
+}
+
+@layer utilities {
+  .animate-aero-float {
+    animation: aero-float 20s ease-in-out infinite;
+  }
+}
+
+/* Reveal 7.css submenus on hover/focus (fly out to the right). */
+[role="menuitem"]:hover > [role="menu"],
+[role="menuitem"]:focus-within > [role="menu"] {
+  display: block;
+}
+
+/* Window manager open/close pop (Win7 feel). */
+@keyframes win-pop-in {
+  0% { transform: scale(0.92) translateY(6px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+@keyframes win-pop-out {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.92) translateY(6px); opacity: 0; }
+}
+
+@layer utilities {
+  .animate-win-pop-in { animation: win-pop-in 0.14s ease-out; }
+  .animate-win-pop-out { animation: win-pop-out 0.14s ease-in forwards; }
+
+  /* Win7-style arrow pointer (inline SVG, inherits to all descendants;
+     inputs keep their I-beam via the UA stylesheet). */
+  .win7-cursor {
+    cursor: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='28'%20height='28'%20viewBox='0%200%2028%2028'%3E%3Cpolygon%20points='3,2%203,21%208,16.5%2011.5,24%2014,23%2010.5,15.5%2017,15.5'%20fill='white'%20stroke='%23111'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3C/svg%3E") 2 2, auto;
+  }
 }
 
 @layer utilities {

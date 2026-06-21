@@ -1,0 +1,12 @@
+# Render Blueprint — deploys the Next.js static export as a (free) Static Site.
+# In Render: New + → Blueprint → pick this repo. Or create a Static Site manually
+# with the build command + publish dir below.
+services:
+  - type: web
+    name: dharani-os
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./out
+    envVars:
+      - key: NODE_VERSION
+        value: "22.23.0"

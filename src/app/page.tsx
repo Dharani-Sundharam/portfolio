@@ -1,50 +1,90 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import dynamic from 'next/dynamic'
-import MobileView from '@/components/MobileView'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import BiosScreen from '@/components/desktop/BiosScreen'
+import LoginScreen from '@/components/desktop/LoginScreen'
+import Desktop from '@/components/desktop/Desktop'
 
-const InteractiveBoard = dynamic(
-  () => import('@/components/InteractiveBoard'),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-screen bg-slate-950 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
-          <p className="text-slate-500 text-sm tracking-widest uppercase">Initialising</p>
-        </div>
-      </div>
-    ),
-  }
-)
+type Phase = 'bios' | 'booting' | 'login' | 'desktop'
 
 export default function Home() {
-  const [isMobile, setIsMobile] = useState<boolean | null>(null)
+  const [phase, setPhase] = useState<Phase>('bios')
+  const rootRef = useRef<HTMLDivElement>(null)
+  const chimeRef = useRef<HTMLAudioElement | null>(null)
 
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 1024)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
+  // Fired from the BIOS "press any key" — the one user gesture that lets us
+  // (a) go fullscreen and (b) preload the startup chime for later playback.
+  const startBoot = useCallback(() => {
+    const el = rootRef.current ?? document.documentElement
+    // Fullscreen is blocked in some embeds (iframes/webviews) — ignore failure.
+    el.requestFullscreen?.().catch(() => {})
+
+    // Startup chime plays NOW, over the "Starting Windows" screen. Firing it
+    // inside this gesture handler guarantees autoplay is allowed. Keep the ref
+    // so it isn't garbage-collected mid-playback.
+    const a = new Audio('/win7/sounds/startup.mp3')
+    a.play().catch(() => {})
+    chimeRef.current = a
+
+    setPhase('booting')
   }, [])
 
-  // Don't render until we know screen size (avoids flash)
-  if (isMobile === null) return null
+  // Boot video finished → reveal the login screen.
+  const onBootEnd = useCallback(() => setPhase('login'), [])
 
-  // Mobile: scroll layout only — no 3D board, no WebGL / graphics-acceleration prompt
-  if (isMobile) {
-    return (
-      <main className="w-full min-h-screen overflow-y-auto bg-slate-950">
-        <MobileView />
-      </main>
-    )
-  }
-
-  // Desktop: 3D motherboard (WebGL check lives inside InteractiveBoard)
   return (
-    <main className="w-full h-screen overflow-hidden bg-slate-950">
-      <InteractiveBoard />
+    <main ref={rootRef} className="fixed inset-0 overflow-hidden bg-black font-win7 win7-cursor">
+      {phase === 'bios' && <BiosScreen onProceed={startBoot} />}
+      {phase === 'booting' && <BootVideo onEnd={onBootEnd} />}
+      {phase === 'login' && <LoginScreen onLogin={() => setPhase('desktop')} />}
+      {phase === 'desktop' && <Desktop />}
     </main>
+  )
+}
+
+// "Starting Windows" boot screen. The video is only the glowing flag (no text),
+// so we overlay "Starting Windows" + the copyright. Muted guarantees autoplay
+// (video has no audio); plays to completion. The text fades in as the flag forms
+// and fades back out as the flag fades, so they disappear together.
+function BootVideo({ onEnd }: { onEnd: () => void }) {
+  const done = useRef(false)
+  const [textVisible, setTextVisible] = useState(false)
+  const finish = useCallback(() => {
+    if (done.current) return
+    done.current = true
+    onEnd()
+  }, [onEnd])
+
+  useEffect(() => {
+    const end = setTimeout(finish, 13000) // video is ~11.75s
+    const fadeIn = setTimeout(() => setTextVisible(true), 2200) // flag forming
+    const fadeOut = setTimeout(() => setTextVisible(false), 9300) // flag fading out
+    return () => {
+      clearTimeout(end)
+      clearTimeout(fadeIn)
+      clearTimeout(fadeOut)
+    }
+  }, [finish])
+
+  const fade = `transition-opacity duration-[1500ms] ${textVisible ? 'opacity-100' : 'opacity-0'}`
+
+  return (
+    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center">
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <video
+        src="/win7/boot/boot.mp4"
+        autoPlay
+        muted
+        playsInline
+        onEnded={finish}
+        className="w-[240px] max-w-[55vw] h-auto"
+      />
+      <div className={`-mt-3 text-[26px] font-light tracking-wide text-white/90 ${fade}`}>
+        Starting Windows
+      </div>
+      <p className={`absolute bottom-[6%] text-[13px] tracking-wide text-white/45 ${fade}`}>
+        © Microsoft Corporation
+      </p>
+    </div>
   )
 }
