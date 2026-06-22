@@ -37,6 +37,12 @@ export default function Window({
   const [size, setSize] = useState({ w: initial.w, h: initial.h })
   const [maximized, setMaximized] = useState(false)
   const [closing, setClosing] = useState(false)
+  const [loading, setLoading] = useState(true) // brief Win7 "app starting" state
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 850)
+    return () => clearTimeout(t)
+  }, [])
 
   const dragRef = useRef<{ sx: number; sy: number; ox: number; oy: number } | null>(null)
   const resizeRef = useRef<{ sx: number; sy: number; ow: number; oh: number } | null>(null)
@@ -106,6 +112,7 @@ export default function Window({
       style={{ position: 'absolute', ...frameStyle, display: minimized ? 'none' : 'block' }}
       className={`window absolute ${maximized ? '!rounded-none' : ''}
                   ${focused ? 'active' : 'brightness-[0.98]'}
+                  ${loading ? 'win7-cursor-busy' : ''}
                   ${closing ? 'animate-win-pop-out' : 'animate-win-pop-in'}`}
     >
       {/* Title bar (drag handle) */}
@@ -122,8 +129,15 @@ export default function Window({
       </div>
 
       {/* Body */}
-      <div className="window-body has-space overflow-auto" style={{ height: bodyHeight }}>
-        {children}
+      <div className="window-body has-space overflow-auto relative" style={{ height: bodyHeight }}>
+        {loading ? (
+          <div className="h-full w-full flex flex-col items-center justify-center gap-2.5 text-slate-600">
+            <span className="loader animate" aria-label="Loading" />
+            <span className="text-[12px] font-win7">Loading…</span>
+          </div>
+        ) : (
+          children
+        )}
       </div>
 
       {/* Resize handle */}

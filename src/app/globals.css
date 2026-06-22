@@ -27,10 +27,38 @@
   }
 }
 
-/* Reveal 7.css submenus on hover/focus (fly out to the right). */
-[role="menuitem"]:hover > [role="menu"],
-[role="menuitem"]:focus-within > [role="menu"] {
-  display: block;
+/* ── Rendered README markdown (project windows) ───────────────────────────── */
+.md-body {
+  font-size: 13px;
+  line-height: 1.55;
+  color: #334155;
+  word-break: break-word;
+}
+.md-body h1 { font-size: 18px; font-weight: 700; margin: 0.6em 0 0.3em; }
+.md-body h2 { font-size: 16px; font-weight: 700; margin: 0.7em 0 0.3em; border-bottom: 1px solid #e2e8f0; padding-bottom: 2px; }
+.md-body h3 { font-size: 14px; font-weight: 600; margin: 0.5em 0 0.2em; }
+.md-body h4, .md-body h5, .md-body h6 { font-size: 13px; font-weight: 600; margin: 0.5em 0 0.2em; }
+.md-body p { margin: 0.4em 0; }
+.md-body a { color: #0369a1; text-decoration: underline; }
+.md-body ul, .md-body ol { margin: 0.4em 0; padding-left: 1.3em; }
+.md-body ul { list-style: disc; }
+.md-body ol { list-style: decimal; }
+.md-body li { margin: 0.15em 0; }
+.md-body code { font-family: var(--font-win7-mono); background: #f1f5f9; padding: 0 4px; border-radius: 3px; font-size: 12px; }
+.md-body pre { background: #0f172a; color: #e2e8f0; padding: 10px; border-radius: 6px; overflow: auto; margin: 0.6em 0; }
+.md-body pre code { background: transparent; color: inherit; padding: 0; }
+.md-body img { max-width: 100%; height: auto; border-radius: 6px; margin: 0.4em 0; }
+.md-body table { border-collapse: collapse; margin: 0.6em 0; font-size: 12px; }
+.md-body th, .md-body td { border: 1px solid #e2e8f0; padding: 3px 8px; }
+.md-body th { background: #f8fafc; }
+.md-body blockquote { border-left: 3px solid #cbd5e1; padding-left: 10px; color: #64748b; margin: 0.5em 0; }
+.md-body hr { border: 0; border-top: 1px solid #e2e8f0; margin: 0.8em 0; }
+
+/* Context menu chrome comes entirely from 7.css (.win7 ul[role=menu]).
+   Only extra: flip submenus to the LEFT when opened near the right screen edge. */
+.win7 ul[role="menu"].flip [role="menuitem"] > ul[role="menu"] {
+  left: auto;
+  right: 100%;
 }
 
 /* Window manager open/close pop (Win7 feel). */
@@ -43,14 +71,28 @@
   100% { transform: scale(0.92) translateY(6px); opacity: 0; }
 }
 
+/* Desktop "Refresh" redraw — quick fade as the icon layer re-paints. */
+@keyframes desktop-redraw {
+  0% { opacity: 0.45; }
+  100% { opacity: 1; }
+}
+
 @layer utilities {
   .animate-win-pop-in { animation: win-pop-in 0.14s ease-out; }
   .animate-win-pop-out { animation: win-pop-out 0.14s ease-in forwards; }
+  .animate-desktop-redraw { animation: desktop-redraw 0.18s ease-out; }
 
   /* Win7-style arrow pointer (inline SVG, inherits to all descendants;
      inputs keep their I-beam via the UA stylesheet). */
   .win7-cursor {
     cursor: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='28'%20height='28'%20viewBox='0%200%2028%2028'%3E%3Cpolygon%20points='3,2%203,21%208,16.5%2011.5,24%2014,23%2010.5,15.5%2017,15.5'%20fill='white'%20stroke='%23111'%20stroke-width='1.4'%20stroke-linejoin='round'/%3E%3C/svg%3E") 2 2, auto;
+  }
+
+  /* Win7 "working in background" busy pointer — the spinning ring while an app
+     loads. Falls back to the native `progress` cursor if .webp isn't supported. */
+  .win7-cursor-busy,
+  .win7-cursor-busy * {
+    cursor: url("/win7/cursor-busy.webp") 11 11, progress !important;
   }
 }
 
