@@ -15,6 +15,7 @@ import PdfViewer from '@/components/desktop/apps/PdfViewer'
 import Browser from '@/components/desktop/apps/Browser'
 import Guide from '@/components/desktop/apps/Guide'
 import Notepad from '@/components/desktop/apps/Notepad'
+import Games from '@/components/desktop/apps/Games'
 
 const PROJECTS = (projectsData as { projects: Project[] }).projects
 
@@ -49,6 +50,7 @@ const APP_META: Record<string, { name: string; icon: string; type: Program['type
   'control-panel': { name: 'Control Panel', icon: '/win7/icons/control-panel.png', type: 'system' },
   browser: { name: 'Internet', icon: '/win7/icons/internet-explorer.png', type: 'app' },
   guide: { name: 'Read Me — Start Here', icon: '/win7/icons/txt.png', type: 'document' },
+  games: { name: 'Games', icon: '/win7/icons/games.svg', type: 'app' },
 }
 
 // Short placeholder body per program — replaced by real apps later.
@@ -170,6 +172,7 @@ function sizeFor(id: string): { w: number; h: number } {
   if (id === 'recycle') return { w: 560, h: 400 }
   if (id === 'browser') return { w: 820, h: 560 }
   if (id === 'guide') return { w: 460, h: 440 }
+  if (id === 'games') return { w: 380, h: 540 }
   if (id.startsWith('project-')) return { w: 600, h: 560 }
   if (id.startsWith('txt-')) return { w: 560, h: 420 }
   return { w: 480, h: 320 }
@@ -246,6 +249,7 @@ export default function Desktop() {
     if (p.id === 'control-panel') return <ControlPanel />
     if (p.id === 'browser') return <Browser />
     if (p.id === 'guide') return <Guide />
+    if (p.id === 'games') return <Games />
     if (p.id.startsWith('folder-')) {
       return (
         <div className="absolute inset-0 flex items-center justify-center text-[12px] text-slate-500 font-win7">
@@ -315,6 +319,7 @@ export default function Desktop() {
       { id: 'github', label: 'GitHub', src: '/win7/icons/github.png', kind: 'system' as const, onOpen: () => openUrl(SOCIAL.github) },
       { id: 'linkedin', label: 'LinkedIn', src: '/win7/icons/linkedin.png', kind: 'system' as const, onOpen: () => openUrl(SOCIAL.linkedin) },
       { id: 'mail', label: 'Mail', src: '/images/google.png', kind: 'system' as const, onOpen: () => openUrl(SOCIAL.mail) },
+      { id: 'games', label: 'Games', src: '/win7/icons/games.svg', kind: 'system' as const, onOpen: () => openApp('games') },
       { id: 'recycle', label: 'Recycle Bin', src: '/win7/icons/recycle-empty.png', kind: 'system' as const, onOpen: () => openApp('recycle') },
       ...userItems.map((u) => {
         const icon = u.kind === 'folder' ? FOLDER_ICON : TXT_ICON

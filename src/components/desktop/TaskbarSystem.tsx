@@ -21,6 +21,7 @@ export const systemPrograms: Program[] = [
   { id: 'resume', name: 'Dharani_CV.pdf', icon: '/win7/icons/pdf.png', type: 'document' },
   { id: 'terminal', name: 'Command Prompt', icon: '/win7/icons/cmd.png', type: 'system' },
   { id: 'control-panel', name: 'Control Panel (Skills)', icon: '/win7/icons/control-panel.png', type: 'system' },
+  { id: 'games', name: 'Games', icon: '/win7/icons/games.svg', type: 'app', description: 'Snake · Tic-Tac-Toe' },
 ]
 
 // Apps pinned to the taskbar (always shown; highlight when running).

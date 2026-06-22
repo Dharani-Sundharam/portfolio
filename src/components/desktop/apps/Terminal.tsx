@@ -14,7 +14,7 @@ const openUrl = (url: string) => {
   if (typeof window !== 'undefined') window.open(url, '_blank', 'noopener,noreferrer')
 }
 
-type Line = { text: string; tone?: 'dim' | 'accent' | 'warn' }
+type Line = { text: string; tone?: 'dim' | 'accent' | 'warn'; pre?: boolean }
 
 const BANNER: Line[] = [
   { text: 'DharaniOS [Version 7.0.7601]' },
@@ -241,7 +241,7 @@ export default function Terminal({ onExit }: { onExit?: () => void }) {
       className="absolute inset-0 overflow-auto bg-[#0c0c0c] p-2 font-win7-mono text-[13px] leading-[1.35] whitespace-pre-wrap break-words selection:bg-slate-600/60"
     >
       {lines.map((l, i) => (
-        <div key={i} className={toneClass(l.tone)}>
+        <div key={i} className={`${toneClass(l.tone)} ${l.pre ? 'whitespace-pre' : ''}`}>
           {l.text || ' '}
         </div>
       ))}
@@ -263,33 +263,31 @@ export default function Terminal({ onExit }: { onExit?: () => void }) {
 }
 
 function neofetch(): Line[] {
+  // Compact Win7-flag art (box-drawing renders 1 cell wide in monospace) so it
+  // never wraps. Lines are flagged `pre` to disable wrapping in the terminal.
   const art = [
-    '        ,.=:^!^!t3Z3z.,        ',
-    '       :tt:::tt333EE3          ',
-    '       Et:::ztt33EEE  @Ee.,    ',
-    '      ;tt:::tt333EE7 ;EEEEEEttt ',
-    '     :Et:::zt333EEQ. $EEEEEttttt',
-    '     it::::tt333EEF @EEEEEEttttt',
-    '    ;3=*^```"*4EEV :EEEEEEttttt ',
-    '    ,.=::::it=., ` @EEEEEEtttz  ',
+    '╔════╦════╗',
+    '║ ▓▓ ║ ▓▓ ║',
+    '╠════╬════╣',
+    '║ ▓▓ ║ ▓▓ ║',
+    '╚════╩════╝',
   ]
   const info = [
-    `${P.profile.name}`,
-    '─────────────────────────',
-    `OS:       DharaniOS 7 (7601)`,
-    `Host:     RMD Engineering College`,
-    `Role:     ECE Undergrad (2024–2028)`,
-    `Shell:    cmd.exe`,
-    `Skills:   ${P.skills.length} installed`,
-    `Projects: ${PROJECTS.length} shipped`,
-    `CTF:      Top 10 India · Top 100 HTB`,
+    'DharaniOS 7 (Build 7601)',
+    '────────────────────────',
+    `user     : ${P.profile.name}`,
+    'role     : ECE @ RMD (2024–2028)',
+    'shell    : cmd.exe',
+    `skills   : ${P.skills.length} installed`,
+    `projects : ${PROJECTS.length} shipped`,
+    'CTF      : Top 10 India · Top 100 HTB',
   ]
   const rows = Math.max(art.length, info.length)
   const out: Line[] = []
   for (let i = 0; i < rows; i++) {
-    const a = art[i] ?? ' '.repeat(30)
+    const a = (art[i] ?? '').padEnd(12)
     const b = info[i] ?? ''
-    out.push({ text: a + '  ' + b, tone: i < 2 ? 'accent' : undefined })
+    out.push({ text: a + '  ' + b, tone: i < 2 ? 'accent' : undefined, pre: true })
   }
   return out
 }
