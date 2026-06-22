@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import BiosScreen from '@/components/desktop/BiosScreen'
 import LoginScreen from '@/components/desktop/LoginScreen'
 import Desktop from '@/components/desktop/Desktop'
+import MobileLayer from '@/components/desktop/MobileLayer'
 
 type Phase = 'bios' | 'booting' | 'login' | 'desktop'
 
@@ -17,7 +18,13 @@ export default function Home() {
   const startBoot = useCallback(() => {
     const el = rootRef.current ?? document.documentElement
     // Fullscreen is blocked in some embeds (iframes/webviews) — ignore failure.
-    el.requestFullscreen?.().catch(() => {})
+    // On mobile, lock to landscape once we're fullscreen (best-effort).
+    Promise.resolve(el.requestFullscreen?.())
+      .then(() => {
+        const orient = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> }
+        orient?.lock?.('landscape').catch(() => {})
+      })
+      .catch(() => {})
 
     // Startup chime plays NOW, over the "Starting Windows" screen. Firing it
     // inside this gesture handler guarantees autoplay is allowed. Keep the ref
@@ -38,6 +45,7 @@ export default function Home() {
       {phase === 'booting' && <BootVideo onEnd={onBootEnd} />}
       {phase === 'login' && <LoginScreen onLogin={() => setPhase('desktop')} />}
       {phase === 'desktop' && <Desktop />}
+      <MobileLayer />
     </main>
   )
 }

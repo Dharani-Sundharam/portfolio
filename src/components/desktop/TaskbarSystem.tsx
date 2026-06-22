@@ -246,7 +246,7 @@ export default function TaskbarSystem({
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 380, damping: 30 }}
             style={{ transformOrigin: 'bottom left' }}
-            className="fixed bottom-12 left-0 w-[420px] h-[550px] max-h-[calc(100vh-3.5rem)] z-50
+            className="fixed bottom-12 left-0 w-[420px] max-w-[94vw] h-[550px] max-h-[calc(100vh-3.5rem)] z-50
                        rounded-t-xl shadow-2xl flex flex-col overflow-hidden
                        bg-slate-900/40 backdrop-blur-xl border border-white/20"
           >
@@ -398,7 +398,7 @@ function VolumeFlyout({
         value={shown}
         onChange={(e) => onChange(Number(e.target.value))}
         style={{ writingMode: 'vertical-lr', direction: 'rtl' }}
-        className="h-32 w-2 accent-sky-500 cursor-pointer"
+        className="h-32 w-2 accent-sky-500 cursor-pointer touch-none"
       />
       <span className="text-[11px] tabular-nums">{shown}</span>
       <button

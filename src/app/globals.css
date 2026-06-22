@@ -21,6 +21,12 @@
   50% { transform: translate(8px, -28px); }
 }
 
+/* Mobile "rotate your device" hint — wobble a phone to landscape and back. */
+@keyframes rotate-device {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-90deg); }
+}
+
 @layer utilities {
   .animate-aero-float {
     animation: aero-float 20s ease-in-out infinite;
@@ -150,6 +156,8 @@ body {
   overflow-x: hidden; /* Prevent horizontal scroll, allow vertical on mobile */
   width: 100%;
   height: 100%;
+  overscroll-behavior: none; /* no pull-to-refresh / bounce on mobile */
+  -webkit-tap-highlight-color: transparent; /* no grey tap flash on touch */
 }
 
 canvas {

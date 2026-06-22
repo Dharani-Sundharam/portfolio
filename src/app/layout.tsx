@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "7.css/dist/7.scoped.css";
 import "./globals.css";
@@ -20,6 +20,14 @@ export const metadata: Metadata = {
     icon: '/images/DS logo.png',
     apple: '/images/DS logo.png',
   },
+};
+
+// App-like on mobile: fill the device, no pinch-zoom.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

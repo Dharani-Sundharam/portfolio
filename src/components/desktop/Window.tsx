@@ -11,6 +11,7 @@ type Props = {
   z: number
   focused: boolean
   minimized: boolean
+  initialMaximized?: boolean
   initial: { x: number; y: number; w: number; h: number }
   onFocus: () => void
   onClose: () => void
@@ -27,6 +28,7 @@ export default function Window({
   z,
   focused,
   minimized,
+  initialMaximized,
   initial,
   onFocus,
   onClose,
@@ -35,7 +37,7 @@ export default function Window({
 }: Props) {
   const [pos, setPos] = useState({ x: initial.x, y: initial.y })
   const [size, setSize] = useState({ w: initial.w, h: initial.h })
-  const [maximized, setMaximized] = useState(false)
+  const [maximized, setMaximized] = useState(initialMaximized ?? false)
   const [closing, setClosing] = useState(false)
   const [loading, setLoading] = useState(true) // brief Win7 "app starting" state
 
@@ -116,7 +118,7 @@ export default function Window({
                   ${closing ? 'animate-win-pop-out' : 'animate-win-pop-in'}`}
     >
       {/* Title bar (drag handle) */}
-      <div className="title-bar" onPointerDown={startDrag} onDoubleClick={() => setMaximized((v) => !v)}>
+      <div className="title-bar touch-none" onPointerDown={startDrag} onDoubleClick={() => setMaximized((v) => !v)}>
         <div className="title-bar-text flex items-center gap-1.5">
           <AppIcon src={iconSrc} className="w-4 h-4 shrink-0" />
           <span className="truncate">{title}</span>
@@ -144,7 +146,7 @@ export default function Window({
       {!maximized && (
         <div
           onPointerDown={startResize}
-          className="absolute right-0 bottom-0 w-4 h-4 cursor-se-resize z-10"
+          className="absolute right-0 bottom-0 w-5 h-5 cursor-se-resize z-10 touch-none"
           aria-label="Resize"
         />
       )}

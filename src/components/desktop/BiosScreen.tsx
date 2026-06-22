@@ -84,9 +84,11 @@ export default function BiosScreen({ onProceed }: { onProceed: () => void }) {
     }
     window.addEventListener('keydown', go)
     window.addEventListener('mousedown', go)
+    window.addEventListener('touchstart', go)
     return () => {
       window.removeEventListener('keydown', go)
       window.removeEventListener('mousedown', go)
+      window.removeEventListener('touchstart', go)
     }
   }, [ready, onProceed])
 

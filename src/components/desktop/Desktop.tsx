@@ -75,6 +75,7 @@ type Win = {
   id: string
   program: Program
   minimized: boolean
+  maxed: boolean // open maximized (mobile)
   x: number
   y: number
   w: number
@@ -200,8 +201,18 @@ export default function Desktop() {
       const existing = cur.find((w) => w.id === p.id)
       if (existing) return cur.map((w) => (w.id === p.id ? { ...w, minimized: false } : w))
       const n = cur.length
-      const { w, h } = sizeFor(p.id)
-      return [...cur, { id: p.id, program: p, minimized: false, x: 150 + n * 28, y: 64 + n * 28, w, h }]
+      const vw = typeof window !== 'undefined' ? window.innerWidth : 1280
+      const vh = typeof window !== 'undefined' ? window.innerHeight : 800
+      // Phones / small tablets: open maximized so the app fills the screen.
+      const mobile =
+        typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches && vw < 1024
+      // Clamp the (restore) size + position so a window never exceeds the viewport.
+      const d = sizeFor(p.id)
+      const w = Math.min(d.w, Math.max(260, vw - 12))
+      const h = Math.min(d.h, Math.max(140, vh - TASKBAR_H - 12))
+      const x = Math.max(8, Math.min(150 + n * 28, vw - w - 8))
+      const y = Math.max(8, Math.min(64 + n * 28, vh - TASKBAR_H - h - 8))
+      return [...cur, { id: p.id, program: p, minimized: false, maxed: mobile, x, y, w, h }]
     })
     setOrder((o) => (o[o.length - 1] === p.id ? o : [...o.filter((x) => x !== p.id), p.id]))
   }, [])
@@ -676,7 +687,7 @@ export default function Desktop() {
           e.preventDefault()
           setCtx({ x: e.clientX, y: e.clientY, items: desktopMenu() })
         }}
-        className="absolute inset-0 bg-[#0b2a5e]"
+        className="absolute inset-0 bg-[#0b2a5e] touch-none"
         style={{
           backgroundImage: "url('/win7/wallpaper/win7-default.jpg')",
           backgroundSize: 'cover',
@@ -708,7 +719,7 @@ export default function Desktop() {
                   setCtx({ x: e.clientX, y: e.clientY, items: iconMenu(d) })
                 }}
                 style={{ left: p.x, top: p.y, width: TILE_W }}
-                className={`pointer-events-auto absolute flex flex-col items-center gap-1 px-1 py-1.5 rounded outline-none border transition-colors ${
+                className={`pointer-events-auto absolute touch-none flex flex-col items-center gap-1 px-1 py-1.5 rounded outline-none border transition-colors ${
                   selected
                     ? 'border-[#cfeaff]/70 bg-[rgba(140,185,245,0.45)] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25),0_2px_5px_rgba(0,0,0,0.3)]'
                     : 'border-transparent hover:border-[#e0f2ff]/60 hover:bg-[rgba(180,212,255,0.28)]'
@@ -755,6 +766,7 @@ export default function Desktop() {
             z={100 + Math.max(0, order.indexOf(w.id))}
             focused={focusedId === w.id}
             minimized={w.minimized}
+            initialMaximized={w.maxed}
             initial={{ x: w.x, y: w.y, w: w.w, h: w.h }}
             onFocus={() => focus(w.id)}
             onClose={() => close(w.id)}
